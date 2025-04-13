@@ -1,0 +1,71 @@
+function openModal(uniqueId) {
+    fetch(`/polling-results/$ {
+            uniqueId
+        }
+
+        `) .then(response=> response.json()) // Parse response as JSON
+
+    .then(data=> {
+            console.log('Raw response:', data); // Log the raw response
+
+            // Set Polling Unit Title
+            document.getElementById('modal_title').innerText=`Results for Polling Unit $ {
+                uniqueId
+            }
+
+            `;
+
+            // Create modal content dynamically
+            const allResultsSection=document.getElementById('all_results_section').querySelector('ul');
+            const winningPartySection=document.getElementById('winning_party_details');
+
+            // Clear previous content
+            allResultsSection.innerHTML='';
+            winningPartySection.innerHTML='';
+
+            // Display all results
+            data.all_results.forEach(result=> {
+                    const resultElement=document.createElement('li');
+                    resultElement.classList.add('flex', 'justify-between', 'items-center');
+
+                    resultElement.innerHTML=` <span class="font-semibold" >$ {
+                        result.party_abbreviation
+                    }
+
+                    </span> <span class="text-sm text-gray-500" >$ {
+                        result.party_score
+                    }
+
+                    votes</span> `;
+                    allResultsSection.appendChild(resultElement);
+                });
+
+            // Display the winning party
+            const winningParty=data.winning_result;
+
+            const winningPartyHTML=` <p><strong>Party:</strong> $ {
+                winningParty.party_abbreviation
+            }
+
+            </p> <p><strong>Score:</strong> $ {
+                winningParty.party_score
+            }
+
+            votes</p> <p><strong>Entered by:</strong> $ {
+                winningParty.entered_by_user
+            }
+
+            </p> <p><strong>Date Entered:</strong> $ {
+                new Date(winningParty.date_entered).toLocaleString()
+            }
+
+            </p> `;
+            winningPartySection.innerHTML=winningPartyHTML;
+
+            // Show the modal
+            document.getElementById('modal').classList.remove('hidden');
+
+        }) .catch(error=> {
+            console.error('Error fetching polling unit data:', error);
+        });
+}
