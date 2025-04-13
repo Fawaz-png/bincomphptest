@@ -25,7 +25,6 @@ yarn-error.log
 /node_modules/
 /.env
 /.env.testing
-/.env.example
 /storage/*.key
 /.vscode/
 /.idea/
