@@ -1,15 +1,13 @@
-# .render.yaml
-
 services:
   - type: web
     name: bincom-laravel-app
     env: docker
     plan: free
-    region: oregon
+    region: frankfurt  # You said your PostgreSQL is hosted in Frankfurt
 
     dockerfilePath: ./Dockerfile
-    buildCommand: ""  # No need, Dockerfile handles install
-    startCommand: ""  # No need, CMD already defined in Dockerfile
+    buildCommand: ""  # Dockerfile handles install
+    startCommand: ""  # CMD is already in Dockerfile
 
     envVars:
       - key: APP_ENV
@@ -18,20 +16,16 @@ services:
         generateValue: true
       - key: APP_DEBUG
         value: false
+
       - key: DB_CONNECTION
-        value: mysql
+        value: pgsql
       - key: DB_HOST
-        fromService:
-          type: pserv
-          name: bincom-mysql
+        value: dpg-cvtpi815pdvs73dunrag-a
       - key: DB_PORT
-        value: 3306
+        value: 5432
       - key: DB_DATABASE
-        value: bincom_db
+        value: bincomphptest
       - key: DB_USERNAME
-        value: root
+        value: bincomphptest_user
       - key: DB_PASSWORD
-        fromService:
-          type: pserv
-          name: bincom-mysql
-          property: password
+        value: uz2wFqxX8qu7eXG9S4Xa8UsaxfrxPFXi
