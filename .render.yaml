@@ -1,0 +1,37 @@
+# .render.yaml
+
+services:
+  - type: web
+    name: bincom-laravel-app
+    env: docker
+    plan: free
+    region: oregon
+
+    dockerfilePath: ./Dockerfile
+    buildCommand: ""  # No need, Dockerfile handles install
+    startCommand: ""  # No need, CMD already defined in Dockerfile
+
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_KEY
+        generateValue: true
+      - key: APP_DEBUG
+        value: false
+      - key: DB_CONNECTION
+        value: mysql
+      - key: DB_HOST
+        fromService:
+          type: pserv
+          name: bincom-mysql
+      - key: DB_PORT
+        value: 3306
+      - key: DB_DATABASE
+        value: bincom_db
+      - key: DB_USERNAME
+        value: root
+      - key: DB_PASSWORD
+        fromService:
+          type: pserv
+          name: bincom-mysql
+          property: password
